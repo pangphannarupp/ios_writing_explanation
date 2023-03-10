@@ -40,6 +40,8 @@
 	<string>$(PRODUCT_NAME) needs to access contact.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs to use location</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access to your microphone to record audio for speech recognition</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>To transcribe user voice input for text entry.</string>
 	<key>SKAdNetworkItems</key>

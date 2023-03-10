@@ -67,10 +67,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "998000e6aa4907dcaa7d95d090ade4c3baae4b42"
+      resolved-ref: "494aecbd4ff61130a1e59feb98ebd8e29b086ccd"
       url: "https://github.com/pangphannarupp/flutter_framework.git"
     source: git
-    version: "0.42.52"
+    version: "0.46.57"
   flutter_lints:
     dependency: "direct dev"
     description:

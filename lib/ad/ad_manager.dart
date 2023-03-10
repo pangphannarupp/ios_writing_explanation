@@ -36,7 +36,8 @@ class AdManager {
   ];
   List<String> unityGameIdsIOS = [
     '5163860',
-    '5182687'
+    '5182687',
+    '5195626'
   ];
 
   List<String> ironSourceAppKeysAndroid = [
@@ -66,39 +67,40 @@ class AdManager {
   ];
   List<String> ironSourceAppKeysIOS = [
     '18a0a148d',
-    '18dbd193d'
+    '18dbd193d',
+    '18ffea88d'
   ];
 
   void register() {
     unityAdsPlugin.initialize(
         unityGameID:
-          Platform.isAndroid ?
-          unityGameIdsAndroid[Random().nextInt(unityGameIdsAndroid.length)] :
-          unityGameIdsIOS[Random().nextInt(unityGameIdsIOS.length)],
+        Platform.isAndroid ?
+        unityGameIdsAndroid[Random().nextInt(unityGameIdsAndroid.length)] :
+        unityGameIdsIOS[Random().nextInt(unityGameIdsIOS.length)],
         testMode: false);
     ironSourceAdsPlugin.initialize(appKey:
-          Platform.isAndroid ?
-          ironSourceAppKeysAndroid[Random().nextInt(ironSourceAppKeysAndroid.length)] :
-          ironSourceAppKeysIOS[Random().nextInt(ironSourceAppKeysIOS.length)]);
+    Platform.isAndroid ?
+    ironSourceAppKeysAndroid[Random().nextInt(ironSourceAppKeysAndroid.length)] :
+    ironSourceAppKeysIOS[Random().nextInt(ironSourceAppKeysIOS.length)]);
 
     ironSourceAdsPlugin.loadInterstitial();
     ironSourceAdsPlugin.loadRewardedVideo();
 
-    if(Platform.isAndroid) {
-      vungleAdsPlugin.initialize(appId: '6018ef9e7428c3216e4505f0');
-    }
+    // if(Platform.isAndroid) {
+    //   vungleAdsPlugin.initialize(appId: '6018ef9e7428c3216e4505f0');
+    // }
   }
 
   void showInterstitial({required bool random}) {
     if (!random) {
-      var randomNumber = Random().nextInt(Platform.isAndroid ? 10 : 8);
-      if (randomNumber < 4) {
+      var randomNumber = Random().nextInt(10);
+      if (randomNumber < 5) {
         if (Random().nextBool()) {
           unityAdsPlugin.showRewardedVideo(adUnitId: 'rewardedVideo');
         } else {
           unityAdsPlugin.showInterstitial(adUnitId: 'video');
         }
-      } else if (randomNumber < 8) {
+      } else if (randomNumber < 10) {
         if (Random().nextBool()) {
           ironSourceAdsPlugin.showRewardedVideo();
         } else {
@@ -113,7 +115,7 @@ class AdManager {
       }
     } else {
       if (Random().nextInt(10) < 5) {
-        var randomNumber = Random().nextInt(Platform.isAndroid ? 10 : 8);
+        var randomNumber = Random().nextInt(10);
         if (randomNumber < 3) {
           if (Random().nextBool()) {
             unityAdsPlugin.showRewardedVideo(adUnitId: 'rewardedVideo');
@@ -138,15 +140,15 @@ class AdManager {
   }
 
   Widget showBanner({required Function onLoad}) {
-    var randomNumber = Random().nextInt(Platform.isAndroid ? 10 : 8);
-    if(randomNumber < 4) {
+    var randomNumber = Random().nextInt(10);
+    if(randomNumber < 5 || Platform.isIOS) {
       return UnityAdsBanner(
         placementId: 'banner',
         onLoad: (placementId) {
           onLoad();
         },
       );
-    } else if(randomNumber < 8) {
+    } else if(randomNumber < 10) {
       return IronSourceBannerAd(
         size: IronSourceBannerSize.BANNER,
         keepAlive: true,
