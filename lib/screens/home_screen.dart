@@ -55,35 +55,32 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         databaseList.isNotEmpty
-            ? Container(
-          margin: EdgeInsets.only(bottom: marginBottomContent),
-          child: ListView.builder(
-            itemCount: databaseList.length,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                            transitionDuration: const Duration(milliseconds: 800),
-                            pageBuilder: (_, __, ___) => DetailScreen(
-                                database: databaseList[index])),
-                      );
-                    },
-                    leading: CircleAvatar(
-                      backgroundImage: AssetImage(
-                          databaseList[index].getImage()),
-                    ),
-                    title: Text(databaseList[index].getTitle()),
-                    trailing: const Icon(Icons.navigate_next),
+            ? ListView.builder(
+          itemCount: databaseList.length,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 800),
+                          pageBuilder: (_, __, ___) => DetailScreen(
+                              database: databaseList[index])),
+                    );
+                  },
+                  leading: CircleAvatar(
+                    backgroundImage: AssetImage(
+                        databaseList[index].getImage()),
                   ),
-                  const Divider(),
-                ],
-              );
-            },
-          ),
+                  title: Text(databaseList[index].getTitle()),
+                  trailing: const Icon(Icons.navigate_next),
+                ),
+                const Divider(),
+              ],
+            );
+          },
         )
             : const Center(
           child: CircularProgressIndicator(),

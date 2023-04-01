@@ -35,20 +35,22 @@ class _DetailScreenState extends State<DetailScreen> {
               Navigator.pop(context);
             }),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  for (int i = 0; i < widget.database.getPages().length; i++)
-                    Image.asset(widget.database.getPages()[i])
-                ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (int i = 0; i < widget.database.getPages().length; i++)
+                      Image.asset(widget.database.getPages()[i])
+                  ],
+                ),
               ),
             ),
-          ),
-          AdManager().showBanner(onLoad: () {})
-        ],
+            AdManager().showBanner(onLoad: () {})
+          ],
+        ),
       ),
     );
   }

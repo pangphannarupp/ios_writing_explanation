@@ -5,7 +5,6 @@ import 'package:flutter_framework/flutter_framework.dart';
 import 'package:writing_explanation/ad/ad_manager.dart';
 import 'package:writing_explanation/languages/language.dart';
 import 'package:writing_explanation/screens/home_screen.dart';
-import 'package:writing_explanation/widgets/grid_button.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -77,11 +76,13 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          const Expanded(child: HomeScreen()),
-          AdManager().showBanner(onLoad: () {})
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            const Expanded(child: HomeScreen()),
+            AdManager().showBanner(onLoad: () {})
+          ],
+        ),
       ),
     );
   }
