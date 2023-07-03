@@ -50,6 +50,10 @@ class _MainScreenState extends State<MainScreen> {
                     sharePlugin.shareLink(
                         link:
                             'https://apps.apple.com/us/app/writing-explanation/id1458615232');
+                  } else {
+                    sharePlugin.shareLink(
+                        link:
+                        'https://appgallery.huawei.com/app/C103517655');
                   }
                 },
                 title: Text(
@@ -65,6 +69,10 @@ class _MainScreenState extends State<MainScreen> {
                     externalBrowserPlugin.open(
                         url:
                             'https://apps.apple.com/us/developer/phanna-pang/id1458265412');
+                  } else {
+                    externalBrowserPlugin.open(
+                        url:
+                        'https://appgallery.huawei.com/tab/appdetailCommon%7CC103338185%7Cautomore%7Cdoublecolumncardwithstar%7C903547');
                   }
                 },
                 title: Text(
