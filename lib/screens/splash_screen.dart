@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
+import 'package:flutter_framework/packages/ad/ad_manager.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:writing_explanation/ad/ad_manager.dart';
 import 'package:writing_explanation/languages/language.dart';
 import 'package:writing_explanation/screens/main_screen.dart';
 
@@ -38,95 +38,70 @@ class _SplashScreenState extends State<SplashScreen> {
   * Initialize OneSignal
   */
   Future<void> initializeOneSignal() async {
-    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+    OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+    OneSignal.Debug.setAlertLevel(OSLogLevel.none);
 
     // CHANGE THIS parameter to true if you want to test GDPR privacy consent
-    // bool requireConsent = false;
-    // OneSignal.shared.setRequiresUserPrivacyConsent(requireConsent);
-
-    // OneSignal.shared
-    //     .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-    //   print('NOTIFICATION OPENED HANDLER CALLED WITH: $result');
-    //   print(
-    //       "Opened notification: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}");
-    // });
-
-    // OneSignal.shared.setNotificationWillShowInForegroundHandler(
-    //         (OSNotificationReceivedEvent event) {
-    //       print('FOREGROUND HANDLER CALLED WITH: $event');
-    //
-    //       /// Display Notification, send null to not display
-    //       event.complete(null);
-    //
-    //       print(
-    //           "Notification received in foreground notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}");
-    //     });
-
-    // OneSignal.shared
-    //     .setInAppMessageClickedHandler((OSInAppMessageAction action) {
-    //   print(
-    //       "In App Message Clicked: \n${action.jsonRepresentation().replaceAll("\\n", "\n")}");
-    // });
-
-    // OneSignal.shared
-    //     .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
-    //   print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
-    // });
-
-
-
-    // OneSignal.shared.setEmailSubscriptionObserver(
-    //         (OSEmailSubscriptionStateChanges changes) {
-    //       print("EMAIL SUBSCRIPTION STATE CHANGED ${changes.jsonRepresentation()}");
-    //     });
-
-    // OneSignal.shared
-    //     .setSMSSubscriptionObserver((OSSMSSubscriptionStateChanges changes) {
-    //   print("SMS SUBSCRIPTION STATE CHANGED ${changes.jsonRepresentation()}");
-    // });
-
-    // OneSignal.shared.setOnWillDisplayInAppMessageHandler((message) {
-    //   print("ON WILL DISPLAY IN APP MESSAGE ${message.messageId}");
-    // });
-
-    // OneSignal.shared.setOnDidDisplayInAppMessageHandler((message) {
-    //   print("ON DID DISPLAY IN APP MESSAGE ${message.messageId}");
-    // });
-
-    // OneSignal.shared.setOnWillDismissInAppMessageHandler((message) {
-    //   print("ON WILL DISMISS IN APP MESSAGE ${message.messageId}");
-    // });
-
-    // OneSignal.shared.setOnDidDismissInAppMessageHandler((message) {
-    //   print("ON DID DISMISS IN APP MESSAGE ${message.messageId}");
-    // });
-
-    OneSignal.shared.setAppId(Platform.isAndroid
+    bool requireConsent = false;
+    OneSignal.consentRequired(requireConsent);
+    OneSignal.initialize(Platform.isAndroid
         ? "84ef587a-9d42-4714-98a1-785fb309dccc"
         : "0099699f-58f8-4aff-892a-75ebfa47a614");
-    OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
-      print("PERMISSION STATE CHANGED: ${changes.jsonRepresentation()}");
+
+    OneSignal.LiveActivities.setupDefault();
+    OneSignal.Notifications.clearAll();
+
+    OneSignal.User.pushSubscription.addObserver((state) {
+      print(OneSignal.User.pushSubscription.optedIn);
+      print(OneSignal.User.pushSubscription.id);
+      print(OneSignal.User.pushSubscription.token);
+      print(state.current.jsonRepresentation());
     });
 
-    // iOS-only method to open launch URLs in Safari when set to false
-    //OneSignal.shared.setLaunchURLsInApp(false);
+    OneSignal.User.addObserver((state) {
+      var userState = state.jsonRepresentation();
+      print('OneSignal user changed: $userState');
+    });
 
-    //bool requiresConsent = await OneSignal.shared.requiresUserPrivacyConsent();
+    OneSignal.Notifications.addPermissionObserver((state) {
+      print("Has permission " + state.toString());
+    });
 
-    // this.setState(() {
-    //   _enableConsentButton = requiresConsent;
-    // });
+    OneSignal.Notifications.addClickListener((event) {
+      print('NOTIFICATION CLICK LISTENER CALLED WITH EVENT: $event');
+      print("Clicked notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}");
+    });
 
-    // Some examples of how to use In App Messaging public methods with OneSignal SDK
-    // oneSignalInAppMessagingTriggerExamples();
+    OneSignal.Notifications.addForegroundWillDisplayListener((event) {
+      print(
+          'NOTIFICATION WILL DISPLAY LISTENER CALLED WITH: ${event.notification.jsonRepresentation()}');
 
-    // OneSignal.shared.disablePush(false);
+      /// Display Notification, preventDefault to not display
+      event.preventDefault();
 
-    // Some examples of how to use Outcome Events public methods with OneSignal SDK
-    // oneSignalOutcomeEventsExamples();
+      /// Do async work
 
-    // bool userProvidedPrivacyConsent = await OneSignal.shared.userProvidedPrivacyConsent();
-    // print("USER PROVIDED PRIVACY CONSENT: $userProvidedPrivacyConsent");
+      /// notification.display() to display after preventing default
+      event.notification.display();
+
+      print("Notification received in foreground notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}");
+    });
+
+    OneSignal.InAppMessages.addClickListener((event) {
+      print("In App Message Clicked: \n${event.result.jsonRepresentation().replaceAll("\\n", "\n")}");
+    });
+    OneSignal.InAppMessages.addWillDisplayListener((event) {
+      print("ON WILL DISPLAY IN APP MESSAGE ${event.message.messageId}");
+    });
+    OneSignal.InAppMessages.addDidDisplayListener((event) {
+      print("ON DID DISPLAY IN APP MESSAGE ${event.message.messageId}");
+    });
+    OneSignal.InAppMessages.addWillDismissListener((event) {
+      print("ON WILL DISMISS IN APP MESSAGE ${event.message.messageId}");
+    });
+    OneSignal.InAppMessages.addDidDismissListener((event) {
+      print("ON DID DISMISS IN APP MESSAGE ${event.message.messageId}");
+    });
   }
 
   void getAppInfo() async {

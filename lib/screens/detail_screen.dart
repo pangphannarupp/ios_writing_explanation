@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:writing_explanation/ad/ad_manager.dart';
+import 'package:flutter_framework/packages/ad/ad_manager.dart';
+import 'package:flutter_framework/plugins/views/startapp_banner.dart';
 import 'package:writing_explanation/models/database.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -14,7 +17,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void initState() {
-    AdManager().showInterstitial(random: true);
 
     super.initState();
   }
@@ -28,11 +30,17 @@ class _DetailScreenState extends State<DetailScreen> {
         centerTitle: true,
         title: Text(
           widget.database.getTitle(),
+          style: const TextStyle(
+              color: Colors.white
+          ),
         ),
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back, color: Colors.white,),
             onPressed: () {
               Navigator.pop(context);
+              if(Random().nextBool()) {
+                AdManager().showInterstitial(random: true);
+              }
             }),
       ),
       body: SafeArea(
@@ -48,7 +56,10 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
               ),
             ),
-            AdManager().showBanner(onLoad: () {})
+            // AdManager().showBanner(onLoad: () {})
+            const StartAppBanner(
+              height: 50,
+            )
           ],
         ),
       ),

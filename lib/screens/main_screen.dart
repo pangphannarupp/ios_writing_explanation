@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_framework/flutter_framework.dart';
-import 'package:writing_explanation/ad/ad_manager.dart';
+import 'package:flutter_framework/packages/ad/ad_manager.dart';
 import 'package:writing_explanation/languages/language.dart';
 import 'package:writing_explanation/screens/home_screen.dart';
 
@@ -26,7 +26,14 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
         centerTitle: true,
-        title: Text(translate[language]!['app']!['name']!),
+        title: Text(translate[language]!['app']!['name']!,
+        style: const TextStyle(
+            color: Colors.white
+        ),
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
       ),
       drawer: Drawer(
         backgroundColor: Theme.of(context).primaryColor,
@@ -84,11 +91,14 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: Column(
           children: [
-            const Expanded(child: HomeScreen()),
-            AdManager().showBanner(onLoad: () {})
+            Expanded(child: HomeScreen()),
+            // AdManager().showBanner(onLoad: () {})
+            StartAppBanner(
+              height: 50,
+            )
           ],
         ),
       ),
